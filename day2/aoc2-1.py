@@ -1,6 +1,6 @@
 def read_input():
-    with open('aoc2-1example.txt', 'r') as file:
-    # with open('aoc2-1input.txt', 'r') as file:
+    # with open('day2/aoc2-1example.txt', 'r') as file:
+    with open('day2/aoc2-1input.txt', 'r') as file:
         lines = file.readlines()
     return lines
 
@@ -9,6 +9,7 @@ def main():
     # list1 = []
     # list2 = []
     safeCount = 0
+    safe = False
     direction = ""
     
     # Read the input file
@@ -17,26 +18,35 @@ def main():
     # Print contents to verify reading
     for line in data:
         splitLine = line.split()
-        print(line.strip())
-        print (splitLine)
+        splitLine = [int(x) for x in splitLine]
+        # print(line.strip())
+        # print (splitLine)
 
-        # list1.append(int(splitLine[0]))
-        # list2.append(int(splitLine[1]))
+        if splitLine[0] > splitLine [1]:
+            direction = "dec"
+        else:
+            direction = "inc"
 
-    # print (list1)
-    # print (list2)
+        safe = True
 
-    # list1.sort()
-    # list2.sort()
+        for i in range(len(splitLine)-1):
+            if direction == "dec" and splitLine[i] <= splitLine[i+1]:
+                # print("dec fail")
+                safe = False
+                break
+            elif direction == "inc" and splitLine[i] >= splitLine[i+1]:
+                # print("inc fail")
+                safe = False
+                break
+            elif abs(splitLine[i] - splitLine[i+1]) > 3:
+                # print("gap fail")
+                safe = False
+                break
+            
+        if safe == True:
+            safeCount += 1
 
-    # print (list1)
-    # print (list2)
-
-    #     for i in range(len(splitLine)):
-    #         gapSum += abs(list2[i] - list1[i])
-    #         print(gapSum)
-
-    # print(gapSum)
+    print(safeCount)
 
 
 if __name__ == "__main__":

@@ -1,16 +1,18 @@
-from collections import Counter
-
 def read_input():
-    # with open('aoc1-1example.txt', 'r') as file:
-    with open('aoc1-1input.txt', 'r') as file:
+    # with open('day2/aoc2-1example.txt', 'r') as file:
+    with open('day2/aoc2-1input.txt', 'r') as file:
         lines = file.readlines()
     return lines
 
 def main():
-        
-    list1 = []
-    list2 = []
-    simScore = 0
+    
+    # list1 = []
+    # list2 = []
+    safeCount = 0
+    safe = False
+    failCount = 0
+    direction = ""
+    
     
     # Read the input file
     data = read_input()
@@ -18,29 +20,69 @@ def main():
     # Print contents to verify reading
     for line in data:
         splitLine = line.split()
+        splitLine = [int(x) for x in splitLine]
         # print(line.strip())
-        # print (splitLine)
+        print (splitLine)
 
-        list1.append(int(splitLine[0]))
-        list2.append(int(splitLine[1]))
+        if splitLine[0] > splitLine [1]:
+            direction = "dec"
+        else:
+            direction = "inc"
 
-    # print (list1)
-    # print (list2)
+        safe = True
+        failCount = 0
+        i = 0
+        j = 1
 
-    list1.sort()
-    list2.sort()
+        while i < len(splitLine)-1:
+            if direction == "dec" and splitLine[i] <= splitLine[j]:
+                failCount += 1
+                print("dec fail")
+                print(failCount)
 
-    # print (list1)
-    # print (list2)
+                if failCount > 1:
+                    safe = False
+                    break
+                else:
+                    j += 1
+                    i = 0
+                    
+                # safe = False
+                # break
+            elif direction == "inc" and splitLine[i] >= splitLine[i+1]:
+                failCount += 1
+                print("inc fail")
+                print(failCount)
 
-    list2Counter = Counter(list2)
+                if failCount > 1:
+                    safe = False
+                    break
+                else:
+                    del splitLine[i+1]
+                    print (splitLine)
+                    i = 0
 
-    for i in range(len(data)):
-        # simScore += abs(list2[i] - list1[i])
-        simScore += list1[i] * list2Counter[list1[i]]
-        # print(simScore)
+                # safe = False
+                # break
+            elif abs(splitLine[i] - splitLine[i+1]) > 3:
+                failCount += 1
+                print("gap fail")
+                print(failCount)
 
-    print(simScore)
+                if failCount > 1:
+                    safe = False
+                    break
+                else:
+                    del splitLine[i+1]
+                    print (splitLine)
+                    i = 0
+            else:
+                i += 1
+
+        if safe == True:
+            safeCount += 1
+
+    print(safeCount)
 
 
 if __name__ == "__main__":
